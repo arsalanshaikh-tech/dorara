@@ -1,0 +1,20 @@
+{
+  "_note": "Hand-written sample following SerpApi's documented Google Hotels response shape. NOT a recorded live response.",
+  "properties": [
+    { "type": "hotel", "name": "Sample Harbour Inn", "hotel_class": "3-star hotel", "link": "https://www.example-property.test/harbour", "property_token": "tok1",
+      "rate_per_night": { "lowest": "$62", "extracted_lowest": 62.4 }, "total_rate": { "extracted_lowest": 312 },
+      "overall_rating": 4.21, "amenities": ["Free Wi-Fi", "Breakfast", "Air conditioning", 7, "Free Wi-Fi", "Pool", "Gym", "Bar", "Parking"],
+      "images": [{ "thumbnail": "https://lh3.googleusercontent.com/sample1" }] },
+    { "type": "hotel", "name": "Sample Old Town Suites", "hotel_class": "4-star hotel", "property_token": "tok2",
+      "rate_per_night": { "extracted_lowest": 118 }, "overall_rating": 4.6, "amenities": ["Spa"], "thumbnail": "http://insecure.test/x.jpg" },
+    { "type": "hotel", "name": "Sample Ad Placement", "sponsored": true, "link": "https://www.google.com/aclk?sa=l&ai=SAMPLE", "property_token": "tok3",
+      "rate_per_night": { "extracted_lowest": 150 } },
+    { "type": "hotel", "name": "Sample Grand Palace", "hotel_class": "5-star hotel", "link": "http://not-https.test", "property_token": "tok4",
+      "rate_per_night": { "extracted_lowest": 301 }, "total_rate": { "extracted_lowest": 1505 }, "overall_rating": 4.8 },
+    { "type": "hotel", "name": "No Rate Hotel", "property_token": "tok5", "overall_rating": 4.0 },
+    { "type": "hotel", "name": "Sample Harbour Inn", "property_token": "dup", "rate_per_night": { "extracted_lowest": 99 } },
+    { "type": "hotel", "name": "Sample Budget Hostel", "property_token": "tok6", "rate_per_night": { "extracted_lowest": 25 }, "overall_rating": 3.9 },
+    { "type": "hotel", "name": "Sample Mid Lodge", "property_token": "tok7", "rate_per_night": { "extracted_lowest": 80 } },
+    { "type": "hotel", "name": "Sample Riverside", "property_token": "tok8", "rate_per_night": { "extracted_lowest": 140 } }
+  ]
+}

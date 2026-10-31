@@ -1,0 +1,116 @@
+import type { Questionnaire } from './types'
+
+// Travel questionnaire schema — drives the QuestionnaireEngine stepper.
+export const travelQuestionnaire: Questionnaire = {
+  vertical: 'travel',
+  title: 'Travel Planner',
+  description:
+    'Tell me about your trip so I can recommend destinations, costs, and a step-by-step plan.',
+  submitLabel: 'Find best destinations',
+  steps: [
+    {
+      id: 'destination_preference',
+      type: 'single_choice_or_text',
+      label: 'Destination preference',
+      help: "Name a city/country or choose 'Open to suggestions'.",
+      options: [
+        'Open to suggestions',
+        'Specific country',
+        'Specific city',
+        'Region (e.g., Europe)',
+      ],
+      validation: { required: true },
+    },
+    {
+      id: 'budget',
+      type: 'range_currency',
+      label: 'Budget range',
+      help: 'Enter your total trip budget (flights, accommodation, daily expenses).',
+      fields: ['min', 'max', 'currency'],
+      validation: { required: true, minValue: 50, maxValue: 1_000_000 },
+    },
+    {
+      id: 'dates',
+      type: 'date_range',
+      label: 'Duration of stay',
+      help: 'Start and end dates, or an approximate duration in days (1–365).',
+      validation: { required: false },
+    },
+    {
+      id: 'departure_location',
+      type: 'airport_autocomplete',
+      label: 'Departure city',
+      help: 'Needed for live flight search. Optional — without it, flights are shown as demo data.',
+      validation: { required: false, maxLength: 100 },
+    },
+    {
+      id: 'party',
+      type: 'single_choice',
+      label: 'Travel party',
+      options: ['Solo', 'Couple', 'Family (kids)', 'Group of friends'],
+      validation: { required: true },
+    },
+    {
+      id: 'age_group',
+      type: 'single_choice',
+      label: 'Age group',
+      options: ['18-25', '26-35', '36-50', '50+'],
+      validation: { required: false },
+    },
+    {
+      id: 'weather',
+      type: 'multi_choice',
+      label: 'Weather preference',
+      options: ['Warm & sunny', 'Cool & mild', 'Cold & snowy', 'No preference'],
+      validation: { required: false },
+    },
+    {
+      id: 'interest_type',
+      type: 'multi_choice',
+      label: 'Interest type',
+      help: 'Pick everything that excites you — choose at least one.',
+      options: [
+        'Adventure',
+        'Culture & history',
+        'Luxury',
+        'Nature & outdoors',
+        'Food & nightlife',
+        'Wellness',
+      ],
+      validation: { required: true, minSelected: 1 },
+    },
+    {
+      id: 'safety_importance',
+      type: 'scale',
+      label: 'How important is safety?',
+      help: 'How much should safety influence your recommendations?',
+      scale: { minLabel: 'Low', maxLabel: 'Critical', min: 1, max: 5 },
+      validation: { required: true },
+    },
+    {
+      id: 'visa_requirements',
+      type: 'single_choice',
+      label: 'Visa requirements',
+      options: [
+        'I have a passport and visa-ready',
+        'Need visa assistance',
+        'Not sure',
+      ],
+      validation: { required: true },
+    },
+    {
+      id: 'food_language',
+      type: 'multi_text',
+      label: 'Food and language preferences',
+      help: 'Any dietary restrictions or languages you prefer / want to avoid.',
+      validation: { required: false },
+    },
+    {
+      id: 'extra_notes',
+      type: 'long_text',
+      label: 'Anything else we should know?',
+      help: 'Optional — up to 1000 characters.',
+      validation: { required: false, maxLength: 1000 },
+    },
+  ],
+}

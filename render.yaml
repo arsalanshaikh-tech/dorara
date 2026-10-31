@@ -1,0 +1,35 @@
+# Render Blueprint for the Dorara API (free tier). Secrets are NOT stored here: every
+# `sync: false` variable is entered in the Render dashboard.
+services:
+  - type: web
+    name: dorara-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: COOKIE_SAMESITE
+        value: lax
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        sync: false
+      - key: JWT_REFRESH_SECRET
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      # Optional: leave unset to run on labelled demo/fallback data.
+      - key: AI_GATEWAY_API_KEY
+        sync: false
+      - key: AI_MODEL
+        sync: false
+      - key: SERPAPI_API_KEY
+        sync: false
+      - key: PEXELS_API_KEY
+        sync: false

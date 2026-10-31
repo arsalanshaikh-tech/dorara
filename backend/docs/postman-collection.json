@@ -1,0 +1,449 @@
+{
+  "info": {
+    "_postman_id": "dorara-api-v1",
+    "name": "Dorara Travel API",
+    "description": "Complete REST API collection for Dorara travel platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"phoneNumber\": \"+1234567890\",\n  \"countryCode\": \"US\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"demo@dorara.ai\",\n  \"password\": \"dorara123\",\n  \"remember\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"email-verification-token-here\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/verify-email",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "verify-email"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Profile",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": ["{{base_url}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"bio\": \"Travel enthusiast\",\n  \"location\": \"Lisbon, Portugal\",\n  \"nationality\": \"US\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": ["{{base_url}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Get Preferences",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/me/preferences",
+              "host": ["{{base_url}}"],
+              "path": ["users", "me", "preferences"]
+            }
+          }
+        },
+        {
+          "name": "Update Preferences",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"budgetPreference\": \"moderate\",\n  \"theme\": \"dark\",\n  \"notificationPreferences\": {\n    \"emailNotifications\": true,\n    \"recommendations\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/me/preferences",
+              "host": ["{{base_url}}"],
+              "path": ["users", "me", "preferences"]
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"your-password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": ["{{base_url}}"],
+              "path": ["users", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Travel",
+      "item": [
+        {
+          "name": "Create Travel Requirement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vertical\": \"travel\",\n  \"answers\": {\n    \"interest_type\": [\"Nature & outdoors\", \"Adventure\"],\n    \"budget\": {\n      \"min\": 1000,\n      \"max\": 5000,\n      \"currency\": \"USD\"\n    },\n    \"dates\": {\n      \"start\": \"2024-06-01\",\n      \"end\": \"2024-06-15\",\n      \"durationDays\": 14\n    },\n    \"party\": \"Solo\",\n    \"weather\": [\"Cool & mild\", \"Warm & sunny\"],\n    \"safety_importance\": 4,\n    \"visa_requirements\": \"I have a passport and visa-ready\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/travel/requirements",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "requirements"]
+            }
+          }
+        },
+        {
+          "name": "List Travel Requirements",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/travel/requirements?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "requirements"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Travel Requirement",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/travel/requirements/:id",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "requirements", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Get Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/travel/recommendations/:requirementId",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "recommendations", ":requirementId"]
+            }
+          }
+        },
+        {
+          "name": "Search Destinations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/travel/destinations?query=tokyo&tags=Culture&safetyMin=80&page=1&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "destinations"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "tokyo"
+                },
+                {
+                  "key": "tags",
+                  "value": "Culture"
+                },
+                {
+                  "key": "safetyMin",
+                  "value": "80"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Destination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/travel/destinations/tokyo",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "destinations", "tokyo"]
+            }
+          }
+        },
+        {
+          "name": "Save Trip Bookmark",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destinationId\": \"destination-id-here\",\n  \"recommendationId\": \"recommendation-id-here\",\n  \"snapshot\": {\n    \"name\": \"Tokyo, Japan\",\n    \"saved_at\": \"2024-01-15T10:30:00Z\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/travel/saved-trips",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "saved-trips"]
+            }
+          }
+        },
+        {
+          "name": "List Saved Trips",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/travel/saved-trips?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "saved-trips"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Search History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/travel/search-history?page=1&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["travel", "search-history"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

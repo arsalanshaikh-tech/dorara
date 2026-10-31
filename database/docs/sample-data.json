@@ -1,0 +1,203 @@
+{
+  "users": [
+    {
+      "_id": "665f1a0000000000000000a1",
+      "firstName": "Alex",
+      "lastName": "Rivera",
+      "username": "alex.rivera",
+      "email": "demo@dorara.ai",
+      "password": "$2a$12$Q7m0m2b9a1... (bcrypt hash — never plain text)",
+      "phoneNumber": "912345678",
+      "countryCode": "+351",
+      "country": "Portugal",
+      "city": "Lisbon",
+      "preferredLanguage": "en",
+      "timeZone": "Europe/Lisbon",
+      "isEmailVerified": true,
+      "isPhoneVerified": false,
+      "isTwoFactorEnabled": false,
+      "role": "user",
+      "status": "active",
+      "lastLogin": "2026-07-18T09:12:00.000Z",
+      "loginCount": 14,
+      "failedLoginAttempts": 0,
+      "accountLockedUntil": null,
+      "isActive": true,
+      "isDeleted": false,
+      "createdAt": "2026-01-04T10:00:00.000Z",
+      "updatedAt": "2026-07-18T09:12:00.000Z"
+    }
+  ],
+  "user_profiles": [
+    {
+      "_id": "665f1a0000000000000000b1",
+      "user": "665f1a0000000000000000a1",
+      "bio": "Exploring the best places to live, work, and study.",
+      "location": "Lisbon, Portugal",
+      "nationality": "American",
+      "theme": "light",
+      "travelPreferences": {
+        "interests": ["Culture & history", "Food & nightlife"],
+        "weather": ["Warm & sunny"],
+        "preferredParty": "Solo",
+        "dietary": [],
+        "languages": [],
+        "safetyImportance": 4
+      },
+      "budgetPreference": { "currency": "USD", "typicalMin": 1500, "typicalMax": 4000, "tier": "mid" },
+      "favouriteDestinations": ["665f1a0000000000000000c2", "665f1a0000000000000000c1"],
+      "notificationPreferences": { "recommendations": true, "product": false, "tips": true, "channelEmail": true, "channelPush": false },
+      "privacySettings": { "profileVisibility": "private", "showEmail": false, "showActivity": false, "allowDataForRecommendations": true },
+      "isActive": true,
+      "isDeleted": false
+    }
+  ],
+  "sessions": [
+    {
+      "_id": "665f1a0000000000000000d1",
+      "user": "665f1a0000000000000000a1",
+      "sessionToken": "b1a2c3... (opaque handle)",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...",
+      "ip": "203.0.113.7",
+      "device": "Chrome on macOS",
+      "rememberMe": true,
+      "lastUsedAt": "2026-07-18T09:12:00.000Z",
+      "revokedAt": null,
+      "expiresAt": "2026-08-17T09:12:00.000Z"
+    }
+  ],
+  "refresh_tokens": [
+    {
+      "_id": "665f1a0000000000000000e1",
+      "user": "665f1a0000000000000000a1",
+      "session": "665f1a0000000000000000d1",
+      "tokenHash": "sha256:9f2b... (hash only)",
+      "family": "3d5f-fam-01",
+      "replacedByTokenHash": null,
+      "rotatedAt": null,
+      "revokedAt": null,
+      "expiresAt": "2026-08-17T09:12:00.000Z"
+    }
+  ],
+  "email_verification_tokens": [
+    {
+      "_id": "665f1a0000000000000000f1",
+      "user": "665f1a0000000000000000a1",
+      "email": "demo@dorara.ai",
+      "tokenHash": "sha256:aa11...",
+      "usedAt": "2026-01-04T10:05:00.000Z",
+      "expiresAt": "2026-01-05T10:00:00.000Z"
+    }
+  ],
+  "password_reset_tokens": [
+    {
+      "_id": "665f1a000000000000000101",
+      "user": "665f1a0000000000000000a1",
+      "tokenHash": "sha256:bb22...",
+      "usedAt": null,
+      "requestedIp": "203.0.113.7",
+      "expiresAt": "2026-07-18T10:12:00.000Z"
+    }
+  ],
+  "questionnaires": [
+    {
+      "_id": "665f1a000000000000000201",
+      "vertical": "travel",
+      "version": 1,
+      "title": "Travel Planner",
+      "description": "Tell me about your trip so I can recommend destinations, costs, and a step-by-step plan.",
+      "submitLabel": "Find best destinations",
+      "isPublished": true,
+      "steps": [
+        { "id": "budget", "type": "range_currency", "label": "Budget range", "fields": ["min", "max", "currency"], "validation": { "required": true, "minValue": 50, "maxValue": 1000000 }, "order": 1 }
+      ]
+    }
+  ],
+  "destinations": [
+    {
+      "_id": "665f1a0000000000000000c1",
+      "slug": "tokyo",
+      "name": "Tokyo",
+      "country": "Japan",
+      "countryCode": "JP",
+      "city": "Tokyo",
+      "tags": ["Culture & history", "Food & nightlife", "Adventure"],
+      "weather": ["Cool & mild", "Warm & sunny"],
+      "avgTempC": 16,
+      "safetyIndex": 96,
+      "costFactor": 1.25,
+      "image": "/travel/tokyo.png",
+      "reason": "World-class food, exceptional safety, and effortless public transport.",
+      "visa": { "visaType": "Tourist eVisa / visa on arrival", "processingTime": "0–15 days", "officialLink": "https://www.mofa.go.jp/j_info/visit/visa/" },
+      "isFeatured": true,
+      "popularity": 98,
+      "isActive": true,
+      "isDeleted": false
+    }
+  ],
+  "travel_requirements": [
+    {
+      "_id": "665f1a000000000000000301",
+      "user": "665f1a0000000000000000a1",
+      "questionnaire": "665f1a000000000000000201",
+      "vertical": "travel",
+      "userName": "Alex",
+      "status": "processed",
+      "answers": {
+        "budget": { "min": 1500, "max": 4000, "currency": "USD" },
+        "dates": { "start": null, "end": null, "durationDays": 10 },
+        "party": "Solo",
+        "interest_type": ["Culture & history", "Food & nightlife"],
+        "safety_importance": 4
+      },
+      "budget": { "min": 1500, "max": 4000, "currency": "USD" },
+      "party": "Solo",
+      "interestType": ["Culture & history", "Food & nightlife"],
+      "safetyImportance": 4,
+      "completedAt": "2026-07-18T09:15:00.000Z"
+    }
+  ],
+  "destination_recommendations": [
+    {
+      "_id": "665f1a000000000000000401",
+      "user": "665f1a0000000000000000a1",
+      "travelRequirement": "665f1a000000000000000301",
+      "vertical": "travel",
+      "userName": "Alex",
+      "recommendedDestinations": [
+        { "destination": "665f1a0000000000000000c1", "slug": "tokyo", "name": "Tokyo, Japan", "country": "Japan", "score": 94, "avgTempC": 16, "safetyIndex": 96, "rank": 1 }
+      ],
+      "costEstimate": { "currency": "USD", "low": 2100, "mid": 2900, "high": 4500, "notes": "Estimate for 10 days, solo." },
+      "visaSummary": [ { "country": "Japan", "visaRequired": "Likely ready", "visaType": "Tourist eVisa / visa on arrival", "processingTime": "0–15 days", "officialLink": "https://www.mofa.go.jp/j_info/visit/visa/" } ],
+      "prosCons": { "advantages": ["High safety index (96/100)."], "disadvantages": ["Higher costs during peak season."] },
+      "alternatives": [ { "name": "Reykjavik, Iceland", "reason": "Northern lights and geothermal spas." } ],
+      "actionPlan": [ { "stepNumber": 1, "title": "Confirm dates & budget", "details": "Lock your 10-day window.", "eta": "1 day" } ],
+      "dataSources": ["costOfLivingAPI", "visaAPI", "weatherAPI", "safetyIndexAPI"],
+      "confidenceScore": 92
+    }
+  ],
+  "saved_trips": [
+    {
+      "_id": "665f1a000000000000000501",
+      "user": "665f1a0000000000000000a1",
+      "destination": "665f1a0000000000000000c1",
+      "recommendation": "665f1a000000000000000401",
+      "vertical": "travel",
+      "snapshot": { "slug": "tokyo", "name": "Tokyo, Japan", "country": "Japan", "imageRef": "/travel/tokyo.png", "score": 94, "safetyIndex": 96, "avgTempC": 16 },
+      "note": "Aim for cherry-blossom season.",
+      "tags": ["shortlist"]
+    }
+  ],
+  "search_history": [
+    {
+      "_id": "665f1a000000000000000601",
+      "user": "665f1a0000000000000000a1",
+      "vertical": "travel",
+      "query": "Warm, mid-budget solo cultural trip",
+      "travelRequirement": "665f1a000000000000000301",
+      "recommendation": "665f1a000000000000000401",
+      "filters": { "party": "Solo", "weather": ["Warm & sunny"], "budgetMax": 4000 },
+      "resultCount": 3
+    }
+  ]
+}

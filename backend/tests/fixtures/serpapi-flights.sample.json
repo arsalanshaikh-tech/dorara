@@ -1,0 +1,37 @@
+{
+  "_note": "Hand-written sample following SerpApi's documented Google Flights response shape. NOT a recorded live response.",
+  "search_metadata": { "status": "Success", "google_flights_url": "https://www.google.com/travel/flights?hl=en&gl=us&curr=USD&tfs=SAMPLE" },
+  "best_flights": [
+    {
+      "flights": [
+        { "departure_airport": { "name": "Indira Gandhi International Airport", "id": "DEL", "time": "2027-03-10 02:30" },
+          "arrival_airport": { "name": "Humberto Delgado Airport", "id": "LIS", "time": "2027-03-10 11:55" },
+          "duration": 625, "airline": "Sample Carrier A", "flight_number": "SA 101" }
+      ],
+      "total_duration": 625, "price": 620, "type": "Round trip"
+    },
+    {
+      "flights": [
+        { "departure_airport": { "name": "Indira Gandhi International Airport", "id": "DEL", "time": "2027-03-10 22:10" },
+          "arrival_airport": { "name": "Dubai International Airport", "id": "DXB", "time": "2027-03-11 00:40" }, "duration": 210, "airline": "Sample Carrier B" },
+        { "departure_airport": { "name": "Dubai International Airport", "id": "DXB", "time": "2027-03-11 03:05" },
+          "arrival_airport": { "name": "Humberto Delgado Airport", "id": "LIS", "time": "2027-03-11 08:20" }, "duration": 435, "airline": "Sample Carrier C" }
+      ],
+      "layovers": [{ "duration": 145, "name": "Dubai International Airport", "id": "DXB" }],
+      "total_duration": 790, "price": 480
+    }
+  ],
+  "other_flights": [
+    {
+      "flights": [
+        { "departure_airport": { "name": "Indira Gandhi International Airport", "id": "DEL", "time": "2027-03-10 06:00" },
+          "arrival_airport": { "name": "Humberto Delgado Airport", "id": "LIS", "time": "2027-03-10 20:30" }, "duration": 900, "airline": "Sample Carrier D" },
+        { "departure_airport": { "name": "x", "id": "AAA", "time": "2027-03-10 06:00" }, "arrival_airport": { "name": "y", "id": "BBB", "time": "2027-03-10 07:00" }, "duration": 60, "airline": "Sample Carrier E" }
+      ],
+      "layovers": [{}, {}],
+      "total_duration": 1230, "price": 410
+    },
+    { "flights": [ { "departure_airport": { "id": "DEL", "time": "2027-03-10 08:00" }, "arrival_airport": { "id": "LIS", "time": "2027-03-10 18:00" }, "duration": 600, "airline": "No Price Air" } ], "total_duration": 600 },
+    { "flights": [ { "departure_airport": { "id": "DEL", "time": "2027-03-10 09:00" }, "arrival_airport": { "id": "LIS", "time": "2027-03-10 19:00" }, "duration": 600, "airline": "Zero Price Air" } ], "total_duration": 600, "price": 0 }
+  ]
+}
