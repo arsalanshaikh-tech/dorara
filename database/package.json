@@ -1,0 +1,9 @@
+{
+  "name": "dorara-database",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "mongoose": "^9.7.4"
+  }
+}
