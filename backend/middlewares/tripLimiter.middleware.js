@@ -19,7 +19,11 @@ const base = { windowMs: 60 * 60 * 1000, standardHeaders: true, legacyHeaders: f
 
 function createTripLimiter({ guestMax = env.TRIP_RATE_LIMIT_GUEST_PER_HOUR, userMax = env.TRIP_RATE_LIMIT_USER_PER_HOUR } = {}) {
   const guest = rateLimit({ ...base, max: guestMax })
-  const user = rateLimit({ ...base, max: userMax, keyGenerator: (req) => `user:${req.userId}`, validate: { keyGeneratorIpFallback: false } })
+  const user = rateLimit({
+  ...base,
+  max: userMax,
+  keyGenerator: (req) => `user:${req.userId}`,
+})
   return function tripLimiter(req, res, next) {
     return (req.userId ? user : guest)(req, res, next)
   }
