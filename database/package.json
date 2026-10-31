@@ -1,9 +1,17 @@
 {
   "name": "dorara-database",
   "version": "1.0.0",
-  "private": true,
+  "description": "Dorara Database - Mongoose models and connection logic",
   "main": "index.js",
+  "type": "commonjs",
   "dependencies": {
-    "mongoose": "^9.7.4"
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^9.7.4",
+    "zod": "^4.4.3"
+  },
+  "optionalDependencies": {
+    "cloudinary": "^2.4.0"
   }
 }

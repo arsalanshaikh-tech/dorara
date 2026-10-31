@@ -5,9 +5,8 @@ services:
     name: dorara-api
     runtime: node
     plan: free
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: npm start
+    buildCommand: npm install --prefix backend && npm install --prefix database
+    startCommand: node backend/server.js
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -24,7 +23,6 @@ services:
         sync: false
       - key: CLIENT_URL
         sync: false
-      # Optional: leave unset to run on labelled demo/fallback data.
       - key: AI_GATEWAY_API_KEY
         sync: false
       - key: AI_MODEL
