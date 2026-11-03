@@ -1,5 +1,11 @@
 'use strict'
-
+const _u = process.env.MONGODB_URI || ''
+const _m = _u.match(/^mongodb(?:\+srv)?:\/\/([^:]+):(.*)@([^@\/]+)\/?([^?]*)/)
+console.log('URI CHECK:', _m
+  ? { user: _m[1], passLen: _m[2].length, passHasAt: _m[2].includes('@'),
+      brackets: /[<>]/.test(_m[2]), host: _m[3], db: _m[4] }
+  : 'MONGODB_URI missing or wrong format',
+  'totalLen:', _u.length)
 const env = require('./config/env')
 const logger = require('./utils/logger')
 const createApp = require('./app')
