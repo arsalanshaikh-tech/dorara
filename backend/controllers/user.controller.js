@@ -2,8 +2,7 @@
 
 const asyncHandler = require('../utils/asyncHandler')
 const userService = require('../services/user.service')
-const { toAuthUser } = require('../serializers/user.serializer')
-const { sendSuccess, sendCreated } = require('../utils/ApiResponse')
+const { sendSuccess } = require('../utils/ApiResponse')
 const ApiError = require('../utils/ApiError')
 
 /**
@@ -12,29 +11,24 @@ const ApiError = require('../utils/ApiError')
 
 /** GET /users/me — fetch the current user's profile */
 const getMe = asyncHandler(async (req, res) => {
-  const user = await userService.getUser(req.userId)
-  if (!user) throw ApiError.notFound('User not found')
+  // The service already returns the finished auth-user object.
+  const user = await userService.getMe(req.userId)
 
   sendSuccess(res, {
     message: 'User profile retrieved',
-    data: { user: toAuthUser(user) },
+    data: { user },
   })
 })
 
 /** PATCH /users/me — update current user's profile */
 const updateProfile = asyncHandler(async (req, res) => {
-  const { name, bio, location, nationality } = req.body
-
-  const user = await userService.updateProfile(req.userId, {
-    name,
-    bio,
-    location,
-    nationality,
-  })
+  // The service only accepts a fixed list of fields, so passing the body is safe.
+  const profile = await userService.updateProfile(req.userId, req.body || {})
+  const user = await userService.getMe(req.userId)
 
   sendSuccess(res, {
     message: 'Profile updated successfully',
-    data: { user: toAuthUser(user) },
+    data: { user, profile },
   })
 })
 
@@ -72,14 +66,17 @@ const getPreferences = asyncHandler(async (req, res) => {
 
 /** PATCH /users/me/preferences — update user preferences */
 const updatePreferences = asyncHandler(async (req, res) => {
-  const { travelPreferences, budgetPreference, notificationPreferences, privacySettings } = req.body
+  const { travelPreferences, budgetPreference, notificationPreferences, privacySettings, theme } =
+    req.body || {}
 
-  const prefs = await userService.updatePreferences(req.userId, {
+  await userService.updatePreferences(req.userId, {
     travelPreferences,
     budgetPreference,
     notificationPreferences,
     privacySettings,
+    theme,
   })
+  const prefs = await userService.getPreferences(req.userId)
 
   sendSuccess(res, {
     message: 'Preferences updated successfully',
@@ -90,10 +87,11 @@ const updatePreferences = asyncHandler(async (req, res) => {
 /** DELETE /users/me — soft-delete user account */
 const deleteAccount = asyncHandler(async (req, res) => {
   // Require password confirmation for destructive action
-  const { password } = req.body
+  const { password } = req.body || {}
   if (!password) throw ApiError.badRequest('Password required to delete account')
 
-  await userService.deleteAccount(req.userId, password)
+  // The service expects an object: { password }
+  await userService.deleteAccount(req.userId, { password })
 
   // Clear auth cookies since the account no longer exists
   res.clearCookie('accessToken', { httpOnly: true, secure: true })

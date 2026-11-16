@@ -100,21 +100,36 @@ async function updateProfile(userId, payload = {}) {
   return toProfile(user, profile)
 }
 
-/** PATCH /users/me/preferences — notification + privacy toggles. */
+/** Set a profile field; plain objects are merged, everything else is replaced. */
+function applyProfileField(profile, field, value) {
+  if (value === undefined) return
+  if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+    profile[field] = { ...(profile[field]?.toObject?.() || profile[field] || {}), ...value }
+  } else {
+    profile[field] = value
+  }
+}
+
+/** GET /users/me/preferences — just the preference fields. */
+async function getPreferences(userId) {
+  const profile = await ensureProfile(userId)
+  const p = typeof profile.toObject === 'function' ? profile.toObject() : profile
+  return {
+    travelPreferences: p.travelPreferences,
+    budgetPreference: p.budgetPreference,
+    notificationPreferences: p.notificationPreferences,
+    privacySettings: p.privacySettings,
+    theme: p.theme,
+  }
+}
+
+/** PATCH /users/me/preferences — travel, budget, notification + privacy settings. */
 async function updatePreferences(userId, payload = {}) {
   const profile = await ensureProfile(userId)
-  if (payload.notificationPreferences) {
-    profile.notificationPreferences = {
-      ...(profile.notificationPreferences?.toObject?.() || profile.notificationPreferences || {}),
-      ...payload.notificationPreferences,
-    }
-  }
-  if (payload.privacySettings) {
-    profile.privacySettings = {
-      ...(profile.privacySettings?.toObject?.() || profile.privacySettings || {}),
-      ...payload.privacySettings,
-    }
-  }
+  applyProfileField(profile, 'travelPreferences', payload.travelPreferences)
+  applyProfileField(profile, 'budgetPreference', payload.budgetPreference)
+  applyProfileField(profile, 'notificationPreferences', payload.notificationPreferences)
+  applyProfileField(profile, 'privacySettings', payload.privacySettings)
   if (payload.theme) profile.theme = payload.theme
   await profile.save()
   const user = await User.findById(userId)
@@ -137,6 +152,26 @@ async function updateAvatar(userId, file) {
   const uploaded = await storageService.uploadImage(file, { folder: 'avatars' })
   user.profilePicture = uploaded.url
   user.profilePictureId = uploaded.publicId || undefined
+  await user.save()
+
+  const profile = await UserProfile.findOne({ user: userId })
+  return toAuthUser(user, profile)
+}
+
+/** DELETE /users/me/avatar — remove the avatar. */
+async function deleteAvatar(userId) {
+  const user = await User.findById(userId)
+  if (!user) throw ApiError.notFound('User not found')
+
+  // Best-effort cleanup of the stored image.
+  if (user.profilePictureId) {
+    Promise.resolve(storageService.destroy(user.profilePictureId)).catch((err) =>
+      logger.warn('Failed to remove avatar', { error: err.message }),
+    )
+  }
+
+  user.profilePicture = undefined
+  user.profilePictureId = undefined
   await user.save()
 
   const profile = await UserProfile.findOne({ user: userId })
@@ -189,8 +224,10 @@ module.exports = {
   getMe,
   getProfile,
   updateProfile,
+  getPreferences,
   updatePreferences,
   updateAvatar,
+  deleteAvatar,
   changePassword,
   deleteAccount,
 }
