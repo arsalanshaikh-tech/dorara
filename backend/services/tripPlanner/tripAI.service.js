@@ -8,8 +8,9 @@ const logger = require('../../utils/logger')
 /**
  * tripAIService — itinerary + "why it fits" generation.
  *
- * One structured generateObject call (Vercel AI SDK via the AI Gateway: AI_GATEWAY_API_KEY,
- * AI_MODEL — the same setup as ai.service.js) returns BOTH parts. The two parts are
+ * One structured generateObject call (Vercel AI SDK; Google Gemini when
+ * GOOGLE_GENERATIVE_AI_API_KEY is set, otherwise the AI Gateway model — the same
+ * setup as ai.service.js) returns BOTH parts. The two parts are
  * validated and used independently:
  *   itinerary valid, fit invalid -> AI itinerary + deterministic fit
  *   fit valid, itinerary invalid -> deterministic itinerary + AI fit
@@ -136,7 +137,13 @@ function resolveDeps(overrides = {}) {
   if (d.enabled === undefined) d.enabled = require('../ai.service').isEnabled()
   if (d.model === undefined || d.timeoutMs === undefined) {
     const env = require('../../config/env')
-    if (d.model === undefined) d.model = env.AI_MODEL
+    if (d.model === undefined) {
+      // Same model selection as ai.service.js (Gemini when its key is set).
+      const lm = require('../ai.service').getModel()
+      d.languageModel = lm
+      // d.model stays a plain string, because it is written to the generation log.
+      d.model = typeof lm === 'string' ? lm : env.GEMINI_MODEL
+    }
     if (d.timeoutMs === undefined) d.timeoutMs = env.TRIP_AI_TIMEOUT_MS
   }
   if (d.generate === undefined) d.generate = (args) => require('ai').generateObject(args)
@@ -210,7 +217,7 @@ async function generateTripContent({ input, p, req, days, ctx = {} }, deps) {
     try {
       const res = await callModel({
         generate: d.generate,
-        model: d.model,
+        model: d.languageModel ?? d.model,
         system,
         prompt,
         timeoutMs: Math.max(3000, Math.min(d.timeoutMs, remaining)),
@@ -219,7 +226,11 @@ async function generateTripContent({ input, p, req, days, ctx = {} }, deps) {
       usage = res?.usage ?? usage
     } catch (err) {
       lastKind = classifyError(err)
-      logger.warn('[tripAI] model call failed', { kind: lastKind, attempt })
+      logger.warn('[tripAI] model call failed', {
+        kind: lastKind,
+        attempt,
+        message: String(err?.message ?? '').slice(0, 300),
+      })
       // The SDK rejects objects that fail ITS validation but keeps the raw text: try to salvage it.
       raw = extractJson(err?.text)
       if (!raw) {
