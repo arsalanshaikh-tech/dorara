@@ -27,6 +27,7 @@
   "author": "Dorara",
   "license": "MIT",
   "dependencies": {
+    "@ai-sdk/google": "^4.0.111",
     "ai": "^7.0.31",
     "bcryptjs": "^3.0.2",
     "compression": "^1.7.4",

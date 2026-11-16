@@ -140,10 +140,14 @@ const env = {
   EMAIL_FROM: optional('EMAIL_FROM', 'Dorara <no-reply@dorara.ai>'),
 
   // ----- AI provider (recommendation ranking / reasoning) -----
-  // Uses the Vercel AI SDK through the AI Gateway. Set AI_GATEWAY_API_KEY to a
-  // Vercel AI Gateway key and pick any supported model string (e.g.
-  // "openai/gpt-4o-mini", "anthropic/claude-3-5-haiku"). When no key is set the
-  // engine transparently falls back to deterministic local scoring.
+  // Option 1 (free tier): set GOOGLE_GENERATIVE_AI_API_KEY to call Google Gemini
+  // directly, and optionally GEMINI_MODEL to pick the model.
+  // Option 2: use the Vercel AI Gateway with AI_GATEWAY_API_KEY and an AI_MODEL
+  // string (e.g. "openai/gpt-4o-mini").
+  // When no key is set the engine transparently falls back to deterministic
+  // local scoring.
+  GOOGLE_GENERATIVE_AI_API_KEY: optional('GOOGLE_GENERATIVE_AI_API_KEY', ''),
+  GEMINI_MODEL: optional('GEMINI_MODEL', 'gemini-2.5-flash'),
   AI_GATEWAY_API_KEY: optional('AI_GATEWAY_API_KEY', ''),
   AI_MODEL: optional('AI_MODEL', 'openai/gpt-4o-mini'),
   // Legacy single-provider keys are still honored by the gateway if present.
@@ -201,8 +205,8 @@ env.features = {
   cloudinary: Boolean(
     env.CLOUDINARY_URL || (env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET),
   ),
-  // Real AI is available when a Gateway (or OpenAI) key is present.
-  ai: Boolean(env.AI_GATEWAY_API_KEY || env.OPENAI_API_KEY),
+  // Real AI is available when a Gemini, Gateway or OpenAI key is present.
+  ai: Boolean(env.GOOGLE_GENERATIVE_AI_API_KEY || env.AI_GATEWAY_API_KEY || env.OPENAI_API_KEY),
   // All live-data providers below are keyless and always available.
   weather: true, // Open-Meteo — no key required
   countries: true, // REST Countries — no key required

@@ -1,6 +1,7 @@
 'use strict'
 
 const { generateObject } = require('ai')
+const { google } = require('@ai-sdk/google')
 const { z } = require('zod')
 const env = require('../config/env')
 const logger = require('../utils/logger')
@@ -8,20 +9,23 @@ const logger = require('../utils/logger')
 /**
  * AI service.
  *
- * Uses the Vercel AI SDK through the AI Gateway to perform REAL LLM-based
- * ranking and reasoning over the destination catalog. A single model string
- * (env.AI_MODEL, e.g. "openai/gpt-4o-mini") is routed by the Gateway, so no
- * provider SDKs are required.
- *
- * Availability is key-gated: if no AI_GATEWAY_API_KEY (or OPENAI_API_KEY) is
- * configured, `isEnabled()` returns false and the recommendation engine uses
- * its deterministic local scoring instead. This keeps the app fully functional
- * with zero configuration while allowing a one-variable upgrade to real AI.
+ * Uses the Vercel AI SDK. If GOOGLE_GENERATIVE_AI_API_KEY is set, it calls
+ * Google Gemini directly (free tier). Otherwise it uses env.AI_MODEL through
+ * the AI Gateway. With no key at all, isEnabled() is false and the app uses
+ * its deterministic local scoring.
  */
 
 /** Whether a real AI provider is configured. */
 function isEnabled() {
-  return Boolean(env.AI_GATEWAY_API_KEY || env.OPENAI_API_KEY)
+  return Boolean(
+    env.GOOGLE_GENERATIVE_AI_API_KEY || env.AI_GATEWAY_API_KEY || env.OPENAI_API_KEY,
+  )
+}
+
+/** The model to call: Gemini if its key is set, otherwise the Gateway model string. */
+function getModel() {
+  if (env.GOOGLE_GENERATIVE_AI_API_KEY) return google(env.GEMINI_MODEL)
+  return env.AI_MODEL
 }
 
 // Schema the model must return: a ranked list with scores + reasoning.
@@ -73,7 +77,7 @@ async function rankDestinations(answers, destinations) {
 
   try {
     const { object } = await generateObject({
-      model: env.AI_MODEL,
+      model: getModel(),
       schema: rankingSchema,
       prompt,
     })
@@ -84,7 +88,7 @@ async function rankDestinations(answers, destinations) {
     if (object.rankings.length === 0) return null
 
     logger.info('[ai.service] AI ranking generated', {
-      model: env.AI_MODEL,
+      model: env.GOOGLE_GENERATIVE_AI_API_KEY ? env.GEMINI_MODEL : env.AI_MODEL,
       ranked: object.rankings.length,
     })
     return object
@@ -98,5 +102,6 @@ async function rankDestinations(answers, destinations) {
 
 module.exports = {
   isEnabled,
+  getModel,
   rankDestinations,
 }
