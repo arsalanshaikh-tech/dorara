@@ -213,6 +213,7 @@ async function generateTripContent({ input, p, req, days, ctx = {} }, deps) {
     attempts = attempt
 
     const { system, prompt } = buildPrompts({ input, p, req, days, retryErrors })
+    const callTimeoutMs = Math.max(3000, Math.min(d.timeoutMs, remaining))
     let raw = null
     try {
       const res = await callModel({
@@ -220,7 +221,7 @@ async function generateTripContent({ input, p, req, days, ctx = {} }, deps) {
         model: d.languageModel ?? d.model,
         system,
         prompt,
-        timeoutMs: Math.max(3000, Math.min(d.timeoutMs, remaining)),
+        timeoutMs: callTimeoutMs,
       })
       raw = res?.object ?? null
       usage = res?.usage ?? usage
@@ -229,6 +230,11 @@ async function generateTripContent({ input, p, req, days, ctx = {} }, deps) {
       logger.warn('[tripAI] model call failed', {
         kind: lastKind,
         attempt,
+        model: d.model,
+        timeoutMs: d.timeoutMs,
+        callTimeoutMs,
+        remainingMs: remaining,
+        elapsedMs: Date.now() - started,
         message: String(err?.message ?? '').slice(0, 300),
       })
       // The SDK rejects objects that fail ITS validation but keeps the raw text: try to salvage it.
