@@ -2,6 +2,7 @@
 
 const ApiError = require('../utils/ApiError')
 const { ERROR_CODES } = require('../constants')
+const logger = require('../utils/logger')
 
 /**
  * CORS origin handling.
@@ -29,6 +30,8 @@ function createOriginHandler(allowedOrigins) {
     // Same-origin / server-to-server (e.g. the Vercel rewrite proxy) / curl.
     if (!origin) return cb(null, true)
     if (allowed.includes(normalizeOrigin(origin))) return cb(null, true)
+    // Origins are public values (not secrets), so it is safe to log them.
+    logger.warn('[cors] blocked origin', { origin, allowed })
     return cb(ApiError.forbidden('This origin is not allowed.', { code: ERROR_CODES.FORBIDDEN }))
   }
 }
